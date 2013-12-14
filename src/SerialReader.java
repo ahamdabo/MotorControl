@@ -14,10 +14,10 @@ public class SerialReader implements Runnable {
 		String msg;
 		try {
 			while ((len = this.in.read(buffer)) > -1) {
-				 msg = new String(buffer, 0, len);
-				 String[] s = msg.split("\\.");
-				 constants.Speed = Integer.parseInt(s[0]);
-				 constants.Direction = Integer.parseInt(s[1]);
+				// msg = new String(buffer, 0, len);
+				// String[] s = msg.split("\\.");
+				// constants.Speed = Integer.parseInt(s[0]);
+				// constants.Direction = Integer.parseInt(s[1]);
 				System.out.print(new String(buffer, 0, len));
 			}
 

@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -19,7 +19,6 @@ public class MainClass implements Runnable {
 
 	static Motor motorLeft, motorRight;
 
-	// Speed and Direction monitoring
 	Thread th = new Thread(this);
 	// Various GUI components and info
 	public static JFrame mainFrame = null;
@@ -29,25 +28,71 @@ public class MainClass implements Runnable {
 	public static JLabel DirectionLabel = null;
 	public static JLabel SpeedLabel = null;
 	public static JLabel CommandLine = null;
+	public static JRadioButton left = null;
+	public static JRadioButton right = null;
 	static final int FPS_MIN = 0;
 	static final int FPS_MAX = 30;
-	static final int FPS_INIT = 15; // initial frames per second
+	static final int FPS_INIT = 15; // initial speed
 	public static JSlider slider = null;
 	public static int flag = 0;
-	int dir, sp;
+	static JPanel pane = null;
+	static ActionAdapter buttonListener = null, button2Listener = null;
+
+	// Values which is passed to direction and speed labels..
+	static int dir, sp;
+	// ///////////////////////////////////////////////////////
+	static ActionListener leftl = null;
+	static ActionListener rightl = null;
+	static ChangeListener l = null;
 
 	private static JPanel initOptionsPane() {
-		JPanel pane = null;
-		ChangeListener l = new ChangeListener() {
+
+		// Slider listener
+		l = new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
-
-				speedDisplay();
+				speedControl();
 			}
 		};
 
-		ActionAdapter buttonListener = null, button2Listener = null;
+		// Left Direction
+		leftl = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				left.setSelected(true);
+				right.setSelected(false);
+
+				try {
+					motorLeft.setDirection(constants.Left);
+					DirectionLabel.setText("Direction: Left");
+				} catch (Exception ex) {
+					// ex.printStackTrace();
+				}
+			}
+		};
+
+		// Right Direction
+		rightl = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				left.setSelected(false);
+				right.setSelected(true);
+				try {
+					motorLeft.setDirection(constants.Right);
+					DirectionLabel.setText("Direction: Right");
+				}
+
+				catch (Exception ex) {
+					// ex.printStackTrace();
+				}
+			}
+		};
+
+		// Connect and StartStop listener
 		JPanel optionsPane = new JPanel(new GridLayout(4, 1));
 		pane = new JPanel(new GridLayout(1, 2));
 		optionsPane.add(pane);
@@ -67,36 +112,46 @@ public class MainClass implements Runnable {
 
 			}
 		};
-
+		// slider
 		slider = new JSlider(JSlider.VERTICAL, FPS_MIN, FPS_MAX, FPS_INIT);
 		slider.addChangeListener(l);
 		slider.setMajorTickSpacing(10);
 		slider.setMinorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
-
+		// connect button
 		connectButton = new JButton("Connect");
 		connectButton.setMnemonic(KeyEvent.VK_C);
 		connectButton.setActionCommand("Send");
 		connectButton.addActionListener(buttonListener);
 		connectButton.setEnabled(true);
-
+		// start stop button
 		StartStop = new JToggleButton("Start");
 		StartStop.setMnemonic(KeyEvent.VK_C);
 		StartStop.setActionCommand("Start");
 		StartStop.addActionListener(button2Listener);
-		StartStop.setEnabled(true);
-
+		StartStop.setEnabled(false);
+		// speed label
 		SpeedLabel = new JLabel("Speed:  ");
 		SpeedLabel.setEnabled(true);
-
+		// direction label
 		DirectionLabel = new JLabel("Direction:  ");
 		DirectionLabel.setEnabled(true);
-
+		// left radio button
+		left = new JRadioButton("left");
+		left.setEnabled(true);
+		left.addActionListener(leftl);
+		left.setSelected(true);
+		// right radio button
+		right = new JRadioButton("Right");
+		right.addActionListener(rightl);
+		right.setEnabled(true);
+		// add to pane
 		buttonPane.add(connectButton);
 		buttonPane.add(StartStop);
-		// buttonPane.add(slider);
-
+		buttonPane.add(left);
+		buttonPane.add(right);
+		// add to pane
 		optionsPane.add(slider);
 		optionsPane.add(DirectionLabel);
 		optionsPane.add(SpeedLabel);
@@ -104,16 +159,13 @@ public class MainClass implements Runnable {
 		return optionsPane;
 	}
 
-	// Action adapter for easy event-listener coding
-
-	static void speedDisplay() {
-		// SpeedLabel.setText("Speed: " + motorLeft.getSpeed());
-		SpeedLabel.setText("Speed: " + slider.getValue());
+	static void speedControl() {
 		try {
+
 			motorLeft.setSpeed(Integer.toString(slider.getValue()));
+			SpeedLabel.setText("Speed: " + slider.getValue());
+
 		} catch (Exception e) {
-			SpeedLabel.setText("Speed: Motor isn't connected");
-			DirectionLabel.setText("Direction: Motor isn't connected");
 		}
 	}
 
@@ -122,7 +174,9 @@ public class MainClass implements Runnable {
 		motorRight = new Motor("COM38");
 		try {
 			(new Thread(new MainClass())).start();
+			StartStop.setEnabled(true);
 		} catch (Exception ex) {
+
 		}
 		connectButton.setText("connected..");
 		connectButton.setEnabled(false);
@@ -130,13 +184,21 @@ public class MainClass implements Runnable {
 
 	static void StartStp() {
 		if (flag == 0) {
-			motorLeft.setSpeed("154.100");
-			System.out.println("00");
-			StartStop.setText("Stop");
-			flag = 1;
+			try {
+				motorLeft.setSpeed("15");
+				System.out.println("00");
+				StartStop.setText("Stop");
+				flag = 1;
+			} catch (Exception e) {
+
+			}
 		}
 
 		else {
+			try {
+				motorLeft.setSpeed("0");
+			} catch (Exception e) {
+			}
 			System.out.println("11");
 			StartStop.setText("Start");
 			flag = 0;
@@ -147,35 +209,27 @@ public class MainClass implements Runnable {
 	private static void initGUI() {
 		// Set up the options pane
 		JPanel optionsPane = initOptionsPane();
-		// Set up the chat pane
-		JPanel chatPane = new JPanel(new BorderLayout());
-		// serialCommand = new JTextField();
-		// serialCommand.setEnabled(true);
-		// chatPane.add(serialCommand, BorderLayout.SOUTH);
-		chatPane.add(slider);
-		chatPane.setSize(200, 400);
-		optionsPane.setSize(300, 400);
+		// Set up the slider pane
+		JPanel sliderPane = new JPanel(new BorderLayout());
+		sliderPane.add(slider);
 		// Set up the main pane
 		JPanel mainPane = new JPanel(new BorderLayout());
 		mainPane.add(optionsPane, BorderLayout.CENTER);
-		mainPane.add(chatPane, BorderLayout.EAST);
-		mainPane.setBackground(Color.RED);
+		mainPane.add(sliderPane, BorderLayout.EAST);
 		mainPane.setSize(500, 500);
 		// Set up the main frame
 		mainFrame = new JFrame("Motor Control");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setContentPane(mainPane);
-		mainFrame.setSize(mainFrame.getPreferredSize());
-		// mainFrame.setSize(mainFrame.getPreferredSize());
 		mainFrame.setLocation(400, 400);
-		mainFrame.setBackground(Color.RED);
-		mainFrame.setSize(400, 400);
-		// mainFrame.pack();
+		mainFrame.setSize(450, 450);
 		mainFrame.setVisible(true);
 	}
 
 	public static void main(String[] args) {
 		initGUI();
+		SpeedLabel.setText("Speed: " + "Not Connected");
+		DirectionLabel.setText("Not Connected");
 	}
 
 	// This Thread is used to view the data captured from the motor
@@ -184,11 +238,6 @@ public class MainClass implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
-			/*
-			 * if (motorLeft.isConnected()) { sp = motorLeft.getSpeed(); dir =
-			 * motorLeft.getDirection(); System.out.println("speed :  " + sp +
-			 * " " + ",Direction: " + dir); }
-			 */
 		}
 	}
 }

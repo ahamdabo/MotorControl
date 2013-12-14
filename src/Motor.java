@@ -10,7 +10,7 @@ public class Motor {
 
 	int speed;
 	String COM;
-	int Direction;
+	String Direction;
 	boolean connected = false;
 	SerialPort serialPort;
 	InputStream in;
@@ -75,16 +75,16 @@ public class Motor {
 
 	int getSpeed() {
 
-		return constants.Speed;
+		return Integer.parseInt(constants.Speed);
 	}
 
-	void setDirection(int dir) {
+	void setDirection(String dir) {
 		Direction = dir;
-		writer(out, Integer.toString(dir));
+		writer(out, dir);
 	}
 
 	int getDirection() {
-		return constants.Direction;
+		return Integer.parseInt(constants.Direction);
 		// return Direction;
 	}
 
