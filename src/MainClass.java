@@ -203,7 +203,6 @@ public class MainClass implements Runnable {
 			StartStop.setText("Start");
 			flag = 0;
 		}
-
 	}
 
 	private static void initGUI() {
