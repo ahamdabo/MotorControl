@@ -174,7 +174,7 @@ public class MainClass implements Runnable {
 	}
 
 	static void connect() {
-		motorLeft = new Motor("COM37");
+		motorLeft = new Motor(constants.COM);
 		motorRight = new Motor("COM38");
 		try {
 			(new Thread(new MainClass())).start();
