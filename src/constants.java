@@ -13,5 +13,5 @@ public class constants {
 	final static String Left = "31";
 	final static String Right = "32";
 	static String Speed = "15";
-	static String Direction = "31";
+	static String Direction = "Left";
 }

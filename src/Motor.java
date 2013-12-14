@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Motor {
+public class Motor implements Runnable {
 
 	int speed;
 	String COM;
@@ -19,8 +19,9 @@ public class Motor {
 	CommPort commPort;
 
 	Motor(String COM) {
-		speed = 50;
-		Direction = constants.Right;
+		// speed = 50;
+		// Direction = constants.Left;
+		this.COM = COM;
 		try {
 			connect(COM);
 			connected = true;
@@ -43,27 +44,14 @@ public class Motor {
 						SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 				in = serialPort.getInputStream();
 				out = serialPort.getOutputStream();
-
 				(new Thread(new SerialReader(in))).start();
-
 			} else {
-				System.out
-						.println("Error: Only serial ports are handled by this example.");
+				System.out.println("Error: Only serial ports are handled.");
 			}
 		}
 	}
 
-	boolean isConnected() {
-		return connected;
-	}
-
-	void setSpeed(String spd) {
-		writer(out, spd);
-		speed = Integer.parseInt("129");
-	}
-
 	void writer(OutputStream out, String msg) {
-
 		try {
 			this.out.write(msg.getBytes());
 		} catch (IOException e) {
@@ -73,19 +61,32 @@ public class Motor {
 
 	}
 
-	int getSpeed() {
+	boolean isConnected() {
+		return connected;
+	}
 
+	void setSpeed(String spd) {
+		writer(out, spd);
+		speed = Integer.parseInt(spd);
+	}
+
+	int getSpeed() {
 		return Integer.parseInt(constants.Speed);
 	}
 
 	void setDirection(String dir) {
-		Direction = dir;
 		writer(out, dir);
+		Direction = dir;
 	}
 
 	int getDirection() {
+
 		return Integer.parseInt(constants.Direction);
-		// return Direction;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
 	}
 
 }

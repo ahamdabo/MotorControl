@@ -8,10 +8,10 @@ public class SerialReader implements Runnable {
 		this.in = in;
 	}
 
+	// String msg;
 	public void run() {
 		byte[] buffer = new byte[1024];
 		int len = -1;
-		String msg;
 		try {
 			while ((len = this.in.read(buffer)) > -1) {
 				// msg = new String(buffer, 0, len);

@@ -3,7 +3,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,8 +17,6 @@ import javax.swing.event.ChangeListener;
 public class MainClass implements Runnable {
 
 	static Motor motorLeft, motorRight;
-
-	Thread th = new Thread(this);
 	// Various GUI components and info
 	public static JFrame mainFrame = null;
 	public static JTextField serialCommand = null;
@@ -63,10 +60,10 @@ public class MainClass implements Runnable {
 				// TODO Auto-generated method stub
 				left.setSelected(true);
 				right.setSelected(false);
-
 				try {
 					motorLeft.setDirection(constants.Left);
 					DirectionLabel.setText("Direction: Left");
+					constants.Direction = "Left";
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
@@ -84,6 +81,7 @@ public class MainClass implements Runnable {
 				try {
 					motorLeft.setDirection(constants.Right);
 					DirectionLabel.setText("Direction: Right");
+					constants.Direction = "Right";
 				}
 
 				catch (Exception ex) {
@@ -112,6 +110,7 @@ public class MainClass implements Runnable {
 
 			}
 		};
+
 		// slider
 		slider = new JSlider(JSlider.VERTICAL, FPS_MIN, FPS_MAX, FPS_INIT);
 		slider.addChangeListener(l);
@@ -119,6 +118,8 @@ public class MainClass implements Runnable {
 		slider.setMinorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
+		slider.setEnabled(false);
+
 		// connect button
 		connectButton = new JButton("Connect");
 		connectButton.setMnemonic(KeyEvent.VK_C);
@@ -139,13 +140,15 @@ public class MainClass implements Runnable {
 		DirectionLabel.setEnabled(true);
 		// left radio button
 		left = new JRadioButton("left");
-		left.setEnabled(true);
 		left.addActionListener(leftl);
 		left.setSelected(true);
+		left.setEnabled(false);
+
 		// right radio button
 		right = new JRadioButton("Right");
 		right.addActionListener(rightl);
 		right.setEnabled(true);
+		right.setEnabled(false);
 		// add to pane
 		buttonPane.add(connectButton);
 		buttonPane.add(StartStop);
@@ -161,9 +164,10 @@ public class MainClass implements Runnable {
 
 	static void speedControl() {
 		try {
-
+			motorLeft.setDirection(constants.Left);
 			motorLeft.setSpeed(Integer.toString(slider.getValue()));
 			SpeedLabel.setText("Speed: " + slider.getValue());
+			DirectionLabel.setText("Direction: " + constants.Direction);
 
 		} catch (Exception e) {
 		}
@@ -176,8 +180,8 @@ public class MainClass implements Runnable {
 			(new Thread(new MainClass())).start();
 			StartStop.setEnabled(true);
 		} catch (Exception ex) {
-
 		}
+
 		connectButton.setText("connected..");
 		connectButton.setEnabled(false);
 	}
@@ -186,9 +190,14 @@ public class MainClass implements Runnable {
 		if (flag == 0) {
 			try {
 				motorLeft.setSpeed("15");
-				System.out.println("00");
+				speedControl();
+				// System.out.println("00");
 				StartStop.setText("Stop");
+				left.setEnabled(true);
+				right.setEnabled(true);
 				flag = 1;
+				slider.setEnabled(true);
+
 			} catch (Exception e) {
 
 			}
@@ -197,9 +206,14 @@ public class MainClass implements Runnable {
 		else {
 			try {
 				motorLeft.setSpeed("0");
+				slider.setEnabled(false);
+				left.setEnabled(false);
+				right.setEnabled(false);
+				DirectionLabel.setText("Stopped");
+				SpeedLabel.setText("Stopped");
 			} catch (Exception e) {
 			}
-			System.out.println("11");
+			// System.out.println("11");
 			StartStop.setText("Start");
 			flag = 0;
 		}
@@ -243,6 +257,6 @@ public class MainClass implements Runnable {
 
 class ActionAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
-
 	}
+
 }
