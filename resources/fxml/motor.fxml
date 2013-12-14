@@ -1,0 +1,30 @@
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Pane blendMode="SRC_ATOP" cache="true" cacheHint="DEFAULT" depthTest="ENABLE" layoutX="0.0" layoutY="0.0" prefHeight="400.0" prefWidth="600.0">
+      <children>
+        <Slider layoutX="550.0" layoutY="36.0" orientation="VERTICAL" prefHeight="329.0" />
+        <RadioButton layoutX="411.0" layoutY="245.0" mnemonicParsing="false" text="CW" />
+        <RadioButton layoutX="411.0" layoutY="268.0" mnemonicParsing="false" text="CCW" />
+        <Label layoutX="60.0" layoutY="218.0" prefHeight="46.0" prefWidth="88.0" text="Speed: ">
+          <font>
+            <Font size="22.0" fx:id="x1" />
+          </font>
+        </Label>
+        <Label font="$x1" layoutX="60.0" layoutY="257.0" prefHeight="46.0" prefWidth="106.0" text="Direction:" />
+        <ToggleButton layoutX="198.0" layoutY="334.0" mnemonicParsing="false" onMouseClicked="#Start" prefHeight="31.9609375" prefWidth="204.0" text="Start" textAlignment="CENTER" textOverrun="CENTER_WORD_ELLIPSIS" />
+        <Label layoutX="170.0" layoutY="237.0" text="0.00 rpm" textFill="RED" />
+        <Label layoutX="179.0" layoutY="276.0" text="------" textFill="RED" />
+        <Label layoutX="60.0" layoutY="21.0" prefHeight="124.9609375" prefWidth="335.0" text="Motor Control">
+          <font>
+            <Font size="39.0" />
+          </font>
+        </Label>
+      </children>
+    </Pane>
+  </children>
+</AnchorPane>
