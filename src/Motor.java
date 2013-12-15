@@ -4,6 +4,7 @@
  * @version 1.01
  * @category Utilities
  * @since Dec 15th 2013
+ *
  * 
  */
 import gnu.io.CommPort;
