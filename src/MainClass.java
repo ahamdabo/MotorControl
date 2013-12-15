@@ -183,11 +183,8 @@ public class MainClass implements Runnable {
 
 	static void speedControl() {
 		try {
-			motorLeft.setDirection(constants.Left);
 			motorLeft.setSpeed(Integer.toString(slider.getValue()));
 			SpeedLabel.setText("Speed: " + slider.getValue());
-			DirectionLabel.setText("Direction: " + motorLeft.getDirection());
-
 		} catch (Exception e) {
 		}
 	}
@@ -209,8 +206,7 @@ public class MainClass implements Runnable {
 		if (flag == 0) {
 			try {
 				motorLeft.start();
-				DirectionLabel
-						.setText("Direction: " + motorLeft.getDirection());
+				DirectionLabel.setText("Direction: " + "Left");
 				SpeedLabel.setText("Speed: " + motorLeft.getSpeed());
 				StartStop.setText("Stop");
 				left.setEnabled(true);
