@@ -3,6 +3,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +15,11 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * 
+ * @author Ahmed
+ *
+ */
 public class MainClass implements Runnable {
 
 	static Motor motorLeft, motorRight;
@@ -37,11 +43,24 @@ public class MainClass implements Runnable {
 
 	// Values which is passed to direction and speed labels..
 	static int dir, sp;
-	// ///////////////////////////////////////////////////////
 	static ActionListener leftl = null;
 	static ActionListener rightl = null;
 	static ChangeListener l = null;
 
+	/*
+	 * This returns the available COMs public static List<String>
+	 * getAvailablePorts() {
+	 * 
+	 * List<String> list = new ArrayList<String>();
+	 * 
+	 * Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+	 * 
+	 * while (portList.hasMoreElements()) { CommPortIdentifier portId =
+	 * (CommPortIdentifier) portList .nextElement(); if (portId.getPortType() ==
+	 * CommPortIdentifier.PORT_SERIAL) { list.add(portId.getName()); } }
+	 * 
+	 * return list; }
+	 */
 	private static JPanel initOptionsPane() {
 
 		// Slider listener
@@ -63,7 +82,8 @@ public class MainClass implements Runnable {
 				try {
 					motorLeft.setDirection(constants.Left);
 					DirectionLabel.setText("Direction: Left");
-					constants.Direction = "Left";
+					motorLeft.setDirection("Left");
+					// constants.Direction = "Left";
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
@@ -81,7 +101,6 @@ public class MainClass implements Runnable {
 				try {
 					motorLeft.setDirection(constants.Right);
 					DirectionLabel.setText("Direction: Right");
-					constants.Direction = "Right";
 				}
 
 				catch (Exception ex) {
@@ -167,7 +186,7 @@ public class MainClass implements Runnable {
 			motorLeft.setDirection(constants.Left);
 			motorLeft.setSpeed(Integer.toString(slider.getValue()));
 			SpeedLabel.setText("Speed: " + slider.getValue());
-			DirectionLabel.setText("Direction: " + constants.Direction);
+			DirectionLabel.setText("Direction: " + motorLeft.getDirection());
 
 		} catch (Exception e) {
 		}
@@ -189,9 +208,10 @@ public class MainClass implements Runnable {
 	static void StartStp() {
 		if (flag == 0) {
 			try {
-				motorLeft.setSpeed("15");
-				speedControl();
-				// System.out.println("00");
+				motorLeft.start();
+				DirectionLabel
+						.setText("Direction: " + motorLeft.getDirection());
+				SpeedLabel.setText("Speed: " + motorLeft.getSpeed());
 				StartStop.setText("Stop");
 				left.setEnabled(true);
 				right.setEnabled(true);
@@ -205,20 +225,19 @@ public class MainClass implements Runnable {
 
 		else {
 			try {
-				motorLeft.setSpeed("0");
+				motorLeft.stop();
 				slider.setEnabled(false);
 				left.setEnabled(false);
 				right.setEnabled(false);
-				DirectionLabel.setText("Stopped");
-				SpeedLabel.setText("Stopped");
+				DirectionLabel.setText("Direction: Stopped");
+				SpeedLabel.setText("Speed: Stopped");
 			} catch (Exception e) {
 			}
-			// System.out.println("11");
 			StartStop.setText("Start");
 			flag = 0;
 		}
 	}
-
+	
 	private static void initGUI() {
 		// Set up the options pane
 		JPanel optionsPane = initOptionsPane();
@@ -237,9 +256,14 @@ public class MainClass implements Runnable {
 		mainFrame.setLocation(400, 400);
 		mainFrame.setSize(450, 450);
 		mainFrame.setVisible(true);
+		mainFrame.setResizable(false);
 	}
 
 	public static void main(String[] args) {
+		// List<String> x = getAvailablePorts();
+		// for (int i = 0; i < x.size(); i++) {
+		// System.out.println(x.get(i));
+		// }
 		initGUI();
 		SpeedLabel.setText("Speed: " + "Not Connected");
 		DirectionLabel.setText("Not Connected");
