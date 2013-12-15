@@ -4,19 +4,18 @@
  * @version 1.01
  * @category Utilities
  * @since Dec 15th 2013
- *
  * 
  */
+
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class Motor implements Runnable {
-	private String speed;
+	private String speed = "4";
 	private String COM;
 	private String Direction;
 	private boolean connected = false;
@@ -27,9 +26,9 @@ public class Motor implements Runnable {
 	private CommPort commPort;
 
 	/**
-	 * 
 	 * @param COM
 	 */
+
 	Motor(String COM) {
 
 		this.COM = COM;
@@ -61,15 +60,24 @@ public class Motor implements Runnable {
 		}
 	}
 
-	void start() {
-		this.speed = "15";
-		this.Direction = "31";
-		writer(out, constants.start);
+	void start(int speed) {
+
+		this.speed = Integer.toString(speed);
+		this.Direction = constants.Left;
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		writer(out, this.Direction);
+		writer(out, this.speed);
+		constants.Direction = "Left";
 	}
 
 	void stop() {
 		writer(out, constants.stop);
-		this.Direction = "0";
+		this.Direction = constants.Left;
 		this.speed = "0";
 	}
 

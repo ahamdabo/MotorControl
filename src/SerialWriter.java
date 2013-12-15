@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * 
  * @author Ahmed
  * 
  */
@@ -11,9 +10,9 @@ public class SerialWriter {
 	String msg;
 
 	/**
-	 * 
 	 * @param out
 	 * @param msg
+	 *
 	 */
 	public SerialWriter(OutputStream out, String msg) {
 		this.out = out;

@@ -14,6 +14,7 @@ public class SerialReader implements Runnable {
 	 * 
 	 * @param in
 	 */
+	
 	public SerialReader(InputStream in) {
 		this.in = in;
 	}

@@ -1,9 +1,10 @@
 /**
  * 
  * @author Ahmad AboELhassan
- * @version 1.01
+ * @version 1.00
  * @category Utilities
  * @since Dec 15th 2013
+ * 
  * 
  */
 
@@ -12,7 +13,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,8 +38,8 @@ public class MainClass implements Runnable {
 	public static JRadioButton left = null;
 	public static JRadioButton right = null;
 	static final int FPS_MIN = 0;
-	static final int FPS_MAX = 30;
-	static final int FPS_INIT = 15; // initial speed
+	static final int FPS_MAX = 9;
+	static final int FPS_INIT = 4; // initial speed
 	public static JSlider slider = null;
 	public static int flag = 0;
 	static JPanel pane = null;
@@ -65,8 +65,9 @@ public class MainClass implements Runnable {
 	 * 
 	 * return list; }
 	 */
+	
 	private static JPanel initOptionsPane() {
-
+		
 		// Slider listener
 		l = new ChangeListener() {
 			@Override
@@ -87,6 +88,7 @@ public class MainClass implements Runnable {
 					motorLeft.setDirection(constants.Left);
 					DirectionLabel.setText("Direction: Left");
 					// constants.Direction = "Left";
+					constants.Direction = "Left";
 				} catch (Exception ex) {
 					// ex.printStackTrace();
 				}
@@ -104,6 +106,7 @@ public class MainClass implements Runnable {
 				try {
 					motorLeft.setDirection(constants.Right);
 					DirectionLabel.setText("Direction: Right");
+					constants.Direction = "Right";
 				}
 
 				catch (Exception ex) {
@@ -186,10 +189,10 @@ public class MainClass implements Runnable {
 
 	static void speedControl() {
 		try {
-			
+
 			motorLeft.setSpeed(Integer.toString(slider.getValue()));
 			SpeedLabel.setText("Speed: " + slider.getValue());
-			
+
 		} catch (Exception e) {
 		}
 	}
@@ -210,7 +213,7 @@ public class MainClass implements Runnable {
 	static void StartStp() {
 		if (flag == 0) {
 			try {
-				motorLeft.start();
+				motorLeft.start(slider.getValue());
 				DirectionLabel.setText("Direction: " + "Left");
 				SpeedLabel.setText("Speed: " + motorLeft.getSpeed());
 				StartStop.setText("Stop");
