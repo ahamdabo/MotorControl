@@ -1,3 +1,12 @@
+/**
+ * 
+ * @author Ahmad AboELhassan
+ * @version 1.01
+ * @category Utilities
+ * @since Dec 15th 2013
+ * 
+ */
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,11 +24,6 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-/**
- * 
- * @author Ahmed
- * 
- */
 public class MainClass implements Runnable {
 
 	static Motor motorLeft; // , motorRight;

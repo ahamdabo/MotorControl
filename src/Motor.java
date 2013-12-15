@@ -1,11 +1,3 @@
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 /**
  * 
  * @author Ahmad AboELhassan
@@ -14,6 +6,14 @@ import java.io.OutputStream;
  * @since Dec 15th 2013
  * 
  */
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 public class Motor implements Runnable {
 	private String speed;
 	private String COM;
