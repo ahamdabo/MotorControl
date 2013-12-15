@@ -18,7 +18,7 @@ import javax.swing.event.ChangeListener;
 /**
  * 
  * @author Ahmed
- *
+ * 
  */
 public class MainClass implements Runnable {
 
@@ -237,7 +237,7 @@ public class MainClass implements Runnable {
 			flag = 0;
 		}
 	}
-	
+
 	private static void initGUI() {
 		// Set up the options pane
 		JPanel optionsPane = initOptionsPane();

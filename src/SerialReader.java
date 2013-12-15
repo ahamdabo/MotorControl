@@ -4,21 +4,20 @@ import java.io.InputStream;
 /**
  * 
  * @author Ahmed
- *
+ * 
  */
 
 public class SerialReader implements Runnable {
 	InputStream in;
-/**
- * 
- * @param in
- */
+
+	/**
+	 * 
+	 * @param in
+	 */
 	public SerialReader(InputStream in) {
 		this.in = in;
 	}
 
-	// String msg;
-	
 	public void run() {
 		byte[] buffer = new byte[1024];
 		int len = -1;

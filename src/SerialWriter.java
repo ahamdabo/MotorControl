@@ -1,24 +1,26 @@
 import java.io.IOException;
 import java.io.OutputStream;
-	/**
-	 * 
-	 * @author Ahmed
-	 *
-	 */
+
+/**
+ * 
+ * @author Ahmed
+ * 
+ */
 public class SerialWriter {
 	OutputStream out;
 	String msg;
-/**
- * 
- * @param out
- * @param msg
- */
+
+	/**
+	 * 
+	 * @param out
+	 * @param msg
+	 */
 	public SerialWriter(OutputStream out, String msg) {
 		this.out = out;
 		this.msg = msg;
 
 		try {
-			this.out.write(msg.getBytes());
+			this.out.write(this.msg.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
