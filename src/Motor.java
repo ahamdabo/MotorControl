@@ -8,7 +8,10 @@ import java.io.OutputStream;
 
 /**
  * 
- * @author Ahmed
+ * @author Ahmad AboELhassan
+ * @version 1.01
+ * @category Utilities
+ * @since Dec 15th 2013
  * 
  */
 public class Motor implements Runnable {
@@ -35,16 +38,30 @@ public class Motor implements Runnable {
 			connected = true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("Motor isnot found.. !! ");
 			connected = false;
+		}
+
+	}
+
+	public void disconnect() {
+		if (serialPort != null) {
+			try {
+				// close the i/o streams.
+				out.close();
+				in.close();
+			} catch (IOException ex) {
+				// don't care
+				System.out.print("Can't close port");
+			}
+			// Close the port.
+			serialPort.close();
 		}
 	}
 
-	/**
- * 
- */
 	void start() {
-		this.speed = "0";
+		this.speed = "15";
 		this.Direction = "31";
 		writer(out, constants.start);
 	}
@@ -93,20 +110,25 @@ public class Motor implements Runnable {
 	void connect(String portName) throws Exception {
 		portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
 		if (portIdentifier.isCurrentlyOwned()) {
+
 			System.out.println("Error: Port is currently in use");
 		} else {
 			commPort = portIdentifier.open(this.getClass().getName(), 1000);
-			if (commPort instanceof SerialPort) {
-				serialPort = (SerialPort) commPort;
 
+			if (commPort instanceof SerialPort) {
+
+				serialPort = (SerialPort) commPort;
 				serialPort.setSerialPortParams(57600, SerialPort.DATABITS_8,
 						SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
 				in = serialPort.getInputStream();
 				out = serialPort.getOutputStream();
+
 				(new Thread(new SerialReader(in))).start();
 			} else {
+
 				System.out.println("Error: Only serial ports are handled.");
+
 			}
 		}
 	}
@@ -121,7 +143,9 @@ public class Motor implements Runnable {
 			this.out.write(msg.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out
+					.println("Can't find the Motor.. !!\nPlease, check if it's still connected");
+			// e.printStackTrace();
 		}
 
 	}

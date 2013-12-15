@@ -22,7 +22,7 @@ import javax.swing.event.ChangeListener;
  */
 public class MainClass implements Runnable {
 
-	static Motor motorLeft; //, motorRight;
+	static Motor motorLeft; // , motorRight;
 	// Various GUI components and info
 	public static JFrame mainFrame = null;
 	public static JTextField serialCommand = null;
@@ -271,6 +271,7 @@ public class MainClass implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while (true) {
+
 		}
 	}
 }
