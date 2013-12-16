@@ -65,9 +65,9 @@ public class MainClass implements Runnable {
 	 * 
 	 * return list; }
 	 */
-	
+
 	private static JPanel initOptionsPane() {
-		
+
 		// Slider listener
 		l = new ChangeListener() {
 			@Override
@@ -207,6 +207,8 @@ public class MainClass implements Runnable {
 		}
 
 		connectButton.setText("connected..");
+		DirectionLabel.setText("Connected");
+		SpeedLabel.setText("Connected");
 		connectButton.setEnabled(false);
 	}
 
@@ -264,6 +266,7 @@ public class MainClass implements Runnable {
 	}
 
 	public static void main(String[] args) {
+		// Get available ports..
 		// List<String> x = getAvailablePorts();
 		// for (int i = 0; i < x.size(); i++) {
 		// System.out.println(x.get(i));

@@ -127,8 +127,9 @@ public class Motor implements Runnable {
 			if (commPort instanceof SerialPort) {
 
 				serialPort = (SerialPort) commPort;
-				serialPort.setSerialPortParams(57600, SerialPort.DATABITS_8,
-						SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+				serialPort.setSerialPortParams(constants.paudRate,
+						SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+						SerialPort.PARITY_NONE);
 
 				in = serialPort.getInputStream();
 				out = serialPort.getOutputStream();
