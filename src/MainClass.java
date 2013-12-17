@@ -32,7 +32,7 @@ import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class MainClass implements Runnable {
+public class MainClass {// implements Runnable {
 
 	static Motor motorLeft; // , motorRight;
 	// Various GUI components and info
@@ -221,7 +221,7 @@ public class MainClass implements Runnable {
 	static void connect() {
 		try {
 			motorLeft = new Motor(constants.COM);
-			(new Thread(new MainClass())).start();
+			// (new Thread(new MainClass())).start();
 			StartStop.setEnabled(true);
 			connectButton.setText("connected..");
 			DirectionLabel.setText("Connected");
@@ -239,6 +239,7 @@ public class MainClass implements Runnable {
 	static void StartStp() {
 		if (flag == 0) {
 			try {
+
 				motorLeft.start(slider.getValue());
 				DirectionLabel.setEnabled(true);
 				SpeedLabel.setEnabled(true);
@@ -249,6 +250,7 @@ public class MainClass implements Runnable {
 				right.setEnabled(true);
 				flag = 1;
 				slider.setEnabled(true);
+
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(mainFrame,
 						"Unfortunately couldn't start.. ", "Inane error",
@@ -263,8 +265,12 @@ public class MainClass implements Runnable {
 				slider.setEnabled(false);
 				left.setEnabled(false);
 				right.setEnabled(false);
+				DirectionLabel.setEnabled(false);
+				SpeedLabel.setEnabled(false);
 				DirectionLabel.setText("Direction: Stopped");
 				SpeedLabel.setText("Speed: Stopped");
+				left.setSelected(true);
+				right.setSelected(false);
 			} catch (Exception e) {
 			}
 			StartStop.setText("Start");
@@ -328,13 +334,14 @@ public class MainClass implements Runnable {
 
 	// This Thread is used to view the data captured from the motor
 	// The speed and the direction..
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		while (true) {
-
-		}
-	}
+	// @Override
+	// public void run() {
+	// // TODO Auto-generated method stub
+	// while (true) {
+	//
+	// }
+	// }
+	// }
 }
 
 class ActionAdapter implements ActionListener {

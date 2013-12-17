@@ -11,19 +11,11 @@ import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-public class Motor implements Runnable {
+public class Motor {// implements Runnable {
 	private String speed = "4";
 	private String COM;
 	private String Direction;
@@ -161,9 +153,9 @@ public class Motor implements Runnable {
 
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-	}
+	// @Override
+	// public void run() {
+	// // TODO Auto-generated method stub
+	// }
 
 }
