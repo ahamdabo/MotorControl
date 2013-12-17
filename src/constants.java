@@ -8,7 +8,7 @@
 
 public class constants {
 
-	static String COM = "COM42";
+	static String COM = "COM38";
 	final static String start = "4";
 	final static String stop = "0";
 	final static String Left = "c";

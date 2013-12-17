@@ -279,6 +279,7 @@ public class MainClass {// implements Runnable {
 		sliderPane.add(slider);
 		// Set up the main pane
 		JPanel mainPane = new JPanel(new BorderLayout());
+		mainPane.setSize(450,450);
 		mainPane.add(optionsPane, BorderLayout.WEST);
 		mainPane.add(sliderPane, BorderLayout.EAST);
 		// Set up the main frame
@@ -286,7 +287,7 @@ public class MainClass {// implements Runnable {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setContentPane(mainPane);
 		mainFrame.setLocation(400, 400);
-		mainFrame.setSize(400, 400);
+		mainFrame.setSize(450, 450);
 		mainFrame.setVisible(true);
 		mainFrame.setResizable(false);
 	}
@@ -311,10 +312,10 @@ public class MainClass {// implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("edit");
+		//System.out.println("edit");
 		xx = getAvailablePorts();
 		xxx = new String[xx.size()];
-		System.out.println("not viewed yet");
+		//System.out.println("not viewed yet");
 		for (int c = 0; c < xxx.length; c++) {
 			xxx[c] = xx.get(c);
 			System.out.println("port " + c + " is : " + xxx[c]);
