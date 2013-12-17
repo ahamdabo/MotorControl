@@ -372,10 +372,13 @@ public class MainClass implements Runnable {// implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					JOptionPane.showMessageDialog(mainFrame,
+					
+					while(true){JOptionPane.showMessageDialog(mainFrame,
 							"Motor is disconnected.. "
 									+ "Please plug motor in and press OK..  ",
 							"Error", JOptionPane.ERROR_MESSAGE);
+					if(getAvailablePorts().contains(constants.COM)){break;}
+					}
 					mainFrame.setEnabled(false);
 					mainFrame.setVisible(false);
 					intialize();
