@@ -9,10 +9,18 @@ public class SerialWriter {
 	OutputStream out;
 	String msg;
 
+/**
+ * 
+ * @param out
+ * @param msg
+ */
+	
 	/**
+	 * 
+	 * @return 
+	 * @category
 	 * @param out
 	 * @param msg
-	 *
 	 */
 	public SerialWriter(OutputStream out, String msg) {
 		this.out = out;

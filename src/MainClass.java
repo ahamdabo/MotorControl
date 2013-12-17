@@ -8,14 +8,22 @@
  * 
  */
 
+import gnu.io.CommPortIdentifier;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
@@ -37,6 +45,7 @@ public class MainClass implements Runnable {
 	public static JLabel CommandLine = null;
 	public static JRadioButton left = null;
 	public static JRadioButton right = null;
+	public static JDialog messageBox = null;
 	static final int FPS_MIN = 0;
 	static final int FPS_MAX = 9;
 	static final int FPS_INIT = 4; // initial speed
@@ -51,20 +60,24 @@ public class MainClass implements Runnable {
 	static ActionListener rightl = null;
 	static ChangeListener l = null;
 
-	/*
-	 * This returns the available COMs public static List<String>
-	 * getAvailablePorts() {
-	 * 
-	 * List<String> list = new ArrayList<String>();
-	 * 
-	 * Enumeration portList = CommPortIdentifier.getPortIdentifiers();
-	 * 
-	 * while (portList.hasMoreElements()) { CommPortIdentifier portId =
-	 * (CommPortIdentifier) portList .nextElement(); if (portId.getPortType() ==
-	 * CommPortIdentifier.PORT_SERIAL) { list.add(portId.getName()); } }
-	 * 
-	 * return list; }
-	 */
+	static List<String> getAvailablePorts() {
+
+		List<String> list = new ArrayList<String>();
+
+		@SuppressWarnings("unchecked")
+		Enumeration<CommPortIdentifier> portList = CommPortIdentifier
+				.getPortIdentifiers();
+
+		while (portList.hasMoreElements()) {
+			CommPortIdentifier portId = portList.nextElement();
+			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+				list.add(portId.getName());
+			}
+		}
+
+		return list;
+
+	}
 
 	private static JPanel initOptionsPane() {
 
@@ -123,7 +136,10 @@ public class MainClass implements Runnable {
 
 		buttonListener = new ActionAdapter() {
 			public void actionPerformed(ActionEvent e) {
+				// custom title, error icon
+
 				new MainClass();
+
 				connect();
 			}
 		};
@@ -157,12 +173,15 @@ public class MainClass implements Runnable {
 		StartStop.setActionCommand("Start");
 		StartStop.addActionListener(button2Listener);
 		StartStop.setEnabled(false);
+
 		// speed label
 		SpeedLabel = new JLabel("Speed:  ");
-		SpeedLabel.setEnabled(true);
+		SpeedLabel.setEnabled(false);
+
 		// direction label
 		DirectionLabel = new JLabel("Direction:  ");
-		DirectionLabel.setEnabled(true);
+		DirectionLabel.setEnabled(false);
+
 		// left radio button
 		left = new JRadioButton("left");
 		left.addActionListener(leftl);
@@ -172,19 +191,21 @@ public class MainClass implements Runnable {
 		// right radio button
 		right = new JRadioButton("Right");
 		right.addActionListener(rightl);
-		right.setEnabled(true);
 		right.setEnabled(false);
+
 		// add to pane
 		buttonPane.add(connectButton);
 		buttonPane.add(StartStop);
 		buttonPane.add(left);
 		buttonPane.add(right);
+
 		// add to pane
 		optionsPane.add(slider);
 		optionsPane.add(DirectionLabel);
 		optionsPane.add(SpeedLabel);
 		optionsPane.add(buttonPane);
 		return optionsPane;
+
 	}
 
 	static void speedControl() {
@@ -198,24 +219,29 @@ public class MainClass implements Runnable {
 	}
 
 	static void connect() {
-		motorLeft = new Motor(constants.COM);
-		// motorRight = new Motor("COM38");
 		try {
+			motorLeft = new Motor(constants.COM);
 			(new Thread(new MainClass())).start();
 			StartStop.setEnabled(true);
-		} catch (Exception ex) {
+			connectButton.setText("connected..");
+			DirectionLabel.setText("Connected");
+			SpeedLabel.setText("Connected");
+			connectButton.setEnabled(false);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(mainFrame,
+					"Unfortunately counldn't connect to motor.. ",
+					"Insane error", JOptionPane.ERROR_MESSAGE);
 		}
-
-		connectButton.setText("connected..");
-		DirectionLabel.setText("Connected");
-		SpeedLabel.setText("Connected");
-		connectButton.setEnabled(false);
 	}
 
 	static void StartStp() {
 		if (flag == 0) {
 			try {
 				motorLeft.start(slider.getValue());
+				DirectionLabel.setEnabled(true);
+				SpeedLabel.setEnabled(true);
 				DirectionLabel.setText("Direction: " + "Left");
 				SpeedLabel.setText("Speed: " + motorLeft.getSpeed());
 				StartStop.setText("Stop");
@@ -223,9 +249,11 @@ public class MainClass implements Runnable {
 				right.setEnabled(true);
 				flag = 1;
 				slider.setEnabled(true);
-
 			} catch (Exception e) {
-
+				JOptionPane.showMessageDialog(mainFrame,
+						"Unfortunately couldn't start.. ", "Inane error",
+						JOptionPane.ERROR_MESSAGE);
+				// System.out.println("Couldn't start");
 			}
 		}
 
@@ -252,28 +280,50 @@ public class MainClass implements Runnable {
 		sliderPane.add(slider);
 		// Set up the main pane
 		JPanel mainPane = new JPanel(new BorderLayout());
-		mainPane.add(optionsPane, BorderLayout.CENTER);
+		mainPane.add(optionsPane, BorderLayout.WEST);
 		mainPane.add(sliderPane, BorderLayout.EAST);
-		mainPane.setSize(500, 500);
 		// Set up the main frame
 		mainFrame = new JFrame("Motor Control");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setContentPane(mainPane);
 		mainFrame.setLocation(400, 400);
-		mainFrame.setSize(450, 450);
+		mainFrame.setSize(400, 400);
 		mainFrame.setVisible(true);
 		mainFrame.setResizable(false);
 	}
 
+	static String xxx[];
+	static List<String> xx;
+
+	static void EditCom() {
+		System.out.println("edit");
+		xx = getAvailablePorts();
+		System.out.println("not viewed yet");
+
+		xxx = new String[xx.size()];
+
+		for (int c = 0; c < xx.size(); c++) {
+			xxx[c] = xx.get(c);
+			System.out.println("port " + c + " is : " + xxx[c]);
+		}
+
+		Object[] possibilities = xxx;
+		String s = (String) JOptionPane.showInputDialog(mainFrame,
+				"Complete the sentence:\n" + "\"Green eggs and...\"",
+				"Customized Dialog", JOptionPane.PLAIN_MESSAGE, null,
+				possibilities, "ham");
+		if ((s != null) && (s.length() > 0)) {
+			constants.COM = s;
+			return;
+		}
+	}
+
 	public static void main(String[] args) {
-		// Get available ports..
-		// List<String> x = getAvailablePorts();
-		// for (int i = 0; i < x.size(); i++) {
-		// System.out.println(x.get(i));
-		// }
+		EditCom();
 		initGUI();
 		SpeedLabel.setText("Speed: " + "Not Connected");
-		DirectionLabel.setText("Not Connected");
+		DirectionLabel.setText("Direction: " + "Not Connected");
+
 	}
 
 	// This Thread is used to view the data captured from the motor
