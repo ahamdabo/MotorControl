@@ -39,18 +39,34 @@ public class Motor {// implements Runnable {
 
 	public void disconnect() {
 		if (serialPort != null) {
+			// close the i/o streams.
 			try {
-				// close the i/o streams.
 				out.close();
 				in.close();
-			} catch (IOException ex) {
-				// don't care
-				System.out.print("Can't close port");
+				Thread.sleep(1000);
+				serialPort.close();
+				Thread.sleep(1000);
+
+			} catch (IOException | InterruptedException e) {
+				// TODO Auto-generated catch block
+				System.out.print("Disconnected fails");
 			}
-			// Close the port.
-			serialPort.close();
+			connected = false;
 		}
 	}
+	
+	public void closePort() {
+		System.out.println("Closing: " );
+		        new Thread(){
+		        @Override
+		        public void run(){
+		            try{
+		            in.close();
+		            serialPort.close();
+		            }catch (IOException ex) {}
+		        }
+		        }.start();
+		    }
 
 	void start(int speed) {
 
@@ -62,13 +78,25 @@ public class Motor {// implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		writer(out, this.Direction);
-		writer(out, this.speed);
+		try {
+			writer(out, this.Direction);
+			writer(out, this.speed);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		constants.Direction = "Left";
 	}
 
 	void stop() {
-		writer(out, constants.stop);
+		try {
+			writer(out, constants.stop);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		this.Direction = constants.Left;
 		this.speed = "0";
 	}
@@ -80,9 +108,16 @@ public class Motor {// implements Runnable {
 	/**
 	 * 
 	 * @param spd
+	 * @throws Throwable
 	 */
 	void setSpeed(String spd) {
-		writer(out, spd);
+		try {
+			writer(out, spd);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		this.speed = spd;
 	}
 
@@ -93,9 +128,15 @@ public class Motor {// implements Runnable {
 	/**
 	 * 
 	 * @param dir
+	 * @throws Throwable
 	 */
 	void setDirection(String dir) {
-		writer(out, dir);
+		try {
+			writer(out, dir);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Direction = dir;
 	}
 
@@ -126,7 +167,8 @@ public class Motor {// implements Runnable {
 				in = serialPort.getInputStream();
 				out = serialPort.getOutputStream();
 
-				(new Thread(new SerialReader(in))).start();
+			//	(new Thread(new SerialReader(in))).start();
+
 			} else {
 
 				System.out.println("Error: Only serial ports are handled.");
@@ -137,25 +179,23 @@ public class Motor {// implements Runnable {
 
 	/**
 	 * 
-	 * @param out
-	 * @param msg
+	 * @param str
+	 * @throws Exception
 	 */
 
-	void writer(OutputStream out, String msg) {
-		try {
-			this.out.write(msg.getBytes());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out
-					.println("Can't find the Motor.. !!\nPlease, check if it's still connected");
-			// e.printStackTrace();
-		}
-
+	void write(String str) throws Throwable {
+		// TODO Auto-generated method stub
+		writer(out, str);
 	}
 
-	// @Override
-	// public void run() {
-	// // TODO Auto-generated method stub
-	// }
+	/**
+	 * 
+	 * @param out
+	 * @param msg
+	 * @throws IOException
+	 */
+	private void writer(OutputStream out, String msg) throws IOException {
+		this.out.write(msg.getBytes());
+	}
 
 }

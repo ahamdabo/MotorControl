@@ -28,11 +28,12 @@ public class SerialReader implements Runnable {
 				// String[] s = msg.split("\\.");
 				// constants.Speed = Integer.parseInt(s[0]);
 				// constants.Direction = Integer.parseInt(s[1]);
-				System.out.print(new String(buffer, 0, len));
+	System.out.print(new String(buffer, 0, len));
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("Error in reading.. ");
 		}
 	}
 }
