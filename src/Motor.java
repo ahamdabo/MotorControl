@@ -37,36 +37,20 @@ public class Motor {// implements Runnable {
 		connected = true;
 	}
 
-	public void disconnect() {
-		if (serialPort != null) {
-			// close the i/o streams.
-			try {
-				out.close();
-				in.close();
-				Thread.sleep(1000);
-				serialPort.close();
-				Thread.sleep(1000);
-
-			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				System.out.print("Disconnected fails");
-			}
-			connected = false;
-		}
-	}
-	
 	public void closePort() {
-		System.out.println("Closing: " );
-		        new Thread(){
-		        @Override
-		        public void run(){
-		            try{
-		            in.close();
-		            serialPort.close();
-		            }catch (IOException ex) {}
-		        }
-		        }.start();
-		    }
+		System.out.println("Closing: ");
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					in.close();
+					serialPort.close();
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}.start();
+	}
 
 	void start(int speed) {
 
@@ -156,23 +140,17 @@ public class Motor {// implements Runnable {
 			System.out.println("Error: Port is currently in use");
 		} else {
 			commPort = portIdentifier.open(this.getClass().getName(), 1000);
-
 			if (commPort instanceof SerialPort) {
-
 				serialPort = (SerialPort) commPort;
 				serialPort.setSerialPortParams(constants.paudRate,
 						SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
 						SerialPort.PARITY_NONE);
-
 				in = serialPort.getInputStream();
 				out = serialPort.getOutputStream();
-
-			//	(new Thread(new SerialReader(in))).start();
-
+				// In case we're planning to read values..
+				// (new Thread(new SerialReader(in))).start();
 			} else {
-
 				System.out.println("Error: Only serial ports are handled.");
-
 			}
 		}
 	}

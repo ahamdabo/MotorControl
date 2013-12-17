@@ -304,31 +304,33 @@ public class MainClass implements Runnable {// implements Runnable {
 			Coms[c] = ComsList.get(c);
 			System.out.println("port " + c + " is : " + Coms[c]);
 		}
-		while (true) {
-			if (Coms.length > 0) {
-				Object[] possibilities = Coms;
-				String s = (String) JOptionPane.showInputDialog(mainFrame,
-						"Please select the motor:\n" + "\"\"", "",
-						JOptionPane.PLAIN_MESSAGE, null, possibilities, "ham");
+		// while (true) {
+		if (Coms.length > 0) {
+			Object[] possibilities = Coms;
+			String s = (String) JOptionPane.showInputDialog(mainFrame,
+					"Please select the motor:\n" + "\"\"", "",
+					JOptionPane.PLAIN_MESSAGE, null, possibilities, "ham");
 
-				if ((s != null) && (s.length() > 0)) {
-					constants.COM = s;
-					return;
-				}
+			if ((s != null) && (s.length() > 0)) {
+				constants.COM = s;
+				return;
 			} else {
-
-				Error = constants.NoMotorsConnectedError;
-				JOptionPane.showConfirmDialog(mainFrame, "Sorry .. "
-						+ "No motors connected !!", "Error",
-						JOptionPane.CLOSED_OPTION);
 				System.exit(0);
 			}
+		} else {
 
+			Error = constants.NoMotorsConnectedError;
+			JOptionPane.showConfirmDialog(mainFrame, "Sorry .. "
+					+ "No motors connected !!", "Error",
+					JOptionPane.CLOSED_OPTION);
+			System.exit(0);
 		}
 
 	}
 
-	static void intialize() {
+	// }
+
+	static void initialize() {
 		EditCom();
 		if (Error == constants.NoMotorsConnectedError) {
 			System.exit(0);
@@ -351,7 +353,7 @@ public class MainClass implements Runnable {// implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		intialize();
+		initialize();
 	}
 
 	@Override
@@ -364,7 +366,6 @@ public class MainClass implements Runnable {// implements Runnable {
 					motorLeft.write("%");
 					Thread.sleep(500);
 				} catch (Throwable x) {
-					// motorLeft.disconnect();
 					motorLeft.closePort();
 					try {
 						Thread.sleep(500);
@@ -372,16 +373,20 @@ public class MainClass implements Runnable {// implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					while(true){JOptionPane.showMessageDialog(mainFrame,
-							"Motor is disconnected.. "
-									+ "Please plug motor in and press OK..  ",
-							"Error", JOptionPane.ERROR_MESSAGE);
-					if(getAvailablePorts().contains(constants.COM)){break;}
+					while (true) {
+						JOptionPane
+								.showMessageDialog(
+										mainFrame,
+										"Motor is disconnected.. "
+												+ "Please plug motor in and press OK..  ",
+										"Error", JOptionPane.ERROR_MESSAGE);
+						if (getAvailablePorts().contains(constants.COM)) {
+							break;
+						}
 					}
 					mainFrame.setEnabled(false);
 					mainFrame.setVisible(false);
-					intialize();
+					initialize();
 					conflag = 0;
 				}
 

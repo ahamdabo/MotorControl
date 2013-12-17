@@ -8,7 +8,6 @@
 
 public class constants {
 
-	
 	static String COM = "COM38";
 	final static String start = "4";
 	final static String stop = "0";
@@ -16,10 +15,6 @@ public class constants {
 	final static String Right = "d";
 	final static int paudRate = 57600;
 	final static int NoMotorsConnectedError = 3;
-	
-	// final static String LastDirection = "c";
-	// editable
 	static String Direction = "Left";
 
-	
 }
