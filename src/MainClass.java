@@ -61,22 +61,17 @@ public class MainClass {// implements Runnable {
 	static ChangeListener l = null;
 
 	static List<String> getAvailablePorts() {
-
 		List<String> list = new ArrayList<String>();
-
 		@SuppressWarnings("unchecked")
 		Enumeration<CommPortIdentifier> portList = CommPortIdentifier
 				.getPortIdentifiers();
-
 		while (portList.hasMoreElements()) {
 			CommPortIdentifier portId = portList.nextElement();
 			if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-				list.add(portId.getName());
+				list.add(portId.getName() );
 			}
 		}
-
 		return list;
-
 	}
 
 	private static JPanel initOptionsPane() {
@@ -239,7 +234,6 @@ public class MainClass {// implements Runnable {
 	static void StartStp() {
 		if (flag == 0) {
 			try {
-
 				motorLeft.start(slider.getValue());
 				DirectionLabel.setEnabled(true);
 				SpeedLabel.setEnabled(true);
@@ -250,7 +244,6 @@ public class MainClass {// implements Runnable {
 				right.setEnabled(true);
 				flag = 1;
 				slider.setEnabled(true);
-
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(mainFrame,
 						"Unfortunately couldn't start.. ", "Inane error",
@@ -301,51 +294,43 @@ public class MainClass {// implements Runnable {
 	static String xxx[];
 	static List<String> xx;
 
-	static void EditCom() {
-		System.out.println("edit");
-		xx = getAvailablePorts();
-		System.out.println("not viewed yet");
-
-		xxx = new String[xx.size()];
-
-		for (int c = 0; c < xx.size(); c++) {
-			xxx[c] = xx.get(c);
-			System.out.println("port " + c + " is : " + xxx[c]);
-		}
-
-		Object[] possibilities = xxx;
+	static void EditCom(String[] x) {
+		
+		Object[] possibilities = x;
+		
 		String s = (String) JOptionPane.showInputDialog(mainFrame,
 				"Complete the sentence:\n" + "\"Green eggs and...\"",
 				"Customized Dialog", JOptionPane.PLAIN_MESSAGE, null,
 				possibilities, "ham");
+
 		if ((s != null) && (s.length() > 0)) {
 			constants.COM = s;
 			return;
 		}
+
 	}
 
 	public static void main(String[] args) {
-		EditCom();
+		System.out.println("edit");
+		xx = getAvailablePorts();
+		xxx = new String[xx.size()];
+		System.out.println("not viewed yet");
+		for (int c = 0; c < xxx.length; c++) {
+			xxx[c] = xx.get(c);
+			System.out.println("port " + c + " is : " + xxx[c]);
+		}
+		EditCom(xxx);
 		initGUI();
+
 		SpeedLabel.setText("Speed: " + "Not Connected");
+
 		DirectionLabel.setText("Direction: " + "Not Connected");
 
 	}
 
-	// This Thread is used to view the data captured from the motor
-	// The speed and the direction..
-	// @Override
-	// public void run() {
-	// // TODO Auto-generated method stub
-	// while (true) {
-	//
-	// }
-	// }
-	// }
 }
 
 class ActionAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	}
-
 }
