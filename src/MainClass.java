@@ -1,21 +1,16 @@
 /**
  * 
- * 
- * @author Ahmed AbdelRazikAssaf 
- * @author Mohammed Alaa
- * @author Afaf Hassan
  * @author Ahmad AboELhassan
- * @version 1.01
+ * @version 1.00
  * @category Utilities
  * @since Dec 15th 2013
  * 
+ * 
  */
-
 
 import gnu.io.CommPortIdentifier;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -24,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -49,11 +45,20 @@ public class MainClass implements Runnable {// implements Runnable {
 	public static JRadioButton left = null;
 	public static JRadioButton right = null;
 	public static JDialog messageBox = null;
+	public static javax.swing.JLabel jLabel45 = null;
+	public static JLabel label1 = null;
+	public static JLabel label2 = null;
+	public static JLabel label3 = null;
+	public static JLabel label4 = null;
+	public static JLabel label5 = null;
+	public static JLabel label6 = null;
+	public static JLabel label7 = null;
 	static final int FPS_MIN = 0;
 	static final int FPS_MAX = 9;
 	static final int FPS_INIT = 4; // initial speed
 	public static JSlider slider = null;
 	public static int flag = 0;
+	static int[] delays;
 	static JPanel pane = null;
 	static int Error = 0;
 
@@ -66,7 +71,8 @@ public class MainClass implements Runnable {// implements Runnable {
 
 	/**
 	 * 
-	 * @return List<String> This method returns the available serial ports
+	 * @return List<String>
+	 * 
 	 */
 	static List<String> getAvailablePorts() {
 		List<String> list = new ArrayList<String>();
@@ -82,7 +88,7 @@ public class MainClass implements Runnable {// implements Runnable {
 		return list;
 	}
 
-	private static JPanel initOptionsPane() {
+	private static void initOptionsPane() {
 
 		// Slider listener
 		l = new ChangeListener() {
@@ -141,15 +147,16 @@ public class MainClass implements Runnable {// implements Runnable {
 		};
 
 		// Connect and StartStop listener
-		JPanel optionsPane = new JPanel(new GridLayout(4, 1));
-		pane = new JPanel(new GridLayout(1, 2));
-		optionsPane.add(pane);
-		JPanel buttonPane = new JPanel(new GridLayout(1, 2));
+		// JPanel optionsPane = new JPanel(new GridLayout(4, 1));
+		// pane = new JPanel(new GridLayout(1, 2));
+		// optionsPane.add(pane);
+		// JPanel buttonPane = new JPanel(new GridLayout(1, 2));
 
 		// slider
-		slider = new JSlider(JSlider.VERTICAL, FPS_MIN, FPS_MAX, FPS_INIT);
+		slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
+		slider.setBounds(150, 250, 200, 100);
 		slider.addChangeListener(l);
-		slider.setMajorTickSpacing(10);
+		slider.setMajorTickSpacing(1);
 		slider.setMinorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
@@ -159,49 +166,79 @@ public class MainClass implements Runnable {// implements Runnable {
 		connectButton = new JButton("Connect");
 		connectButton.addActionListener(connectB);
 		connectButton.setEnabled(true);
+		connectButton.setBounds(150, 450, 200, 25);
+
 		// start stop button
 		StartStop = new JToggleButton("Start");
 		StartStop.addActionListener(startB);
 		StartStop.setEnabled(false);
+		StartStop.setBounds(150, 500, 200, 25);
 
 		// speed label
 		SpeedLabel = new JLabel("Speed:  ");
 		SpeedLabel.setEnabled(false);
+		SpeedLabel.setBounds(180, 360, 300, 25);
 
 		// direction label
 		DirectionLabel = new JLabel("Direction:  ");
 		DirectionLabel.setEnabled(false);
+		DirectionLabel.setBounds(180, 380, 300, 25);
 
 		// left radio button
 		left = new JRadioButton("left");
 		left.addActionListener(leftl);
 		left.setSelected(true);
 		left.setEnabled(false);
+		left.setBounds(50, 270, 100, 25);
 
 		// right radio button
 		right = new JRadioButton("Right");
 		right.addActionListener(rightl);
 		right.setEnabled(false);
+		right.setBounds(50, 290, 100, 25);
 
-		// add to pane
-		buttonPane.add(connectButton);
-		buttonPane.add(StartStop);
-		buttonPane.add(left);
-		buttonPane.add(right);
+		// Labels
+		label1 = new JLabel("Information Technology Institute");
+		label2 = new JLabel("Java Project");
+		label3 = new JLabel("Team members: ");
+		label4 = new JLabel("Afaf Hassan");
+		label5 = new JLabel("Ahmed Abo Elhassan");
+		label6 = new JLabel("Ahmed Assaf");
+		label7 = new JLabel("Mohamed Hekal");
 
-		// add to pane
-		optionsPane.add(slider);
-		optionsPane.add(DirectionLabel);
-		optionsPane.add(SpeedLabel);
-		optionsPane.add(buttonPane);
-		return optionsPane;
+		label1.setBounds(140, 10, 240, 50);
+		label2.setBounds(180, 30, 240, 50);
+		label3.setBounds(20, 60, 240, 50);
+		label4.setBounds(20, 100, 240, 50);
+		label5.setBounds(20, 120, 240, 50);
+		label6.setBounds(20, 140, 240, 50);
+		label7.setBounds(20, 160, 240, 50);
+
+		// ADD pic
+		ImageIcon image = new ImageIcon("iti.jpg");
+		jLabel45 = new javax.swing.JLabel();
+		jLabel45.setIcon(image);
+		jLabel45.setBounds(400, 50, 150, 150);
+		/*
+		 * // add to pane buttonPane.add(connectButton);
+		 * buttonPane.add(StartStop); buttonPane.add(left);
+		 * buttonPane.add(right);
+		 * 
+		 * // add to pane optionsPane.add(slider);
+		 * optionsPane.add(DirectionLabel); optionsPane.add(SpeedLabel);
+		 * optionsPane.add(buttonPane); return optionsPane;
+		 */
 
 	}
 
-	
 	static void speedControl() {
 		motorLeft.setSpeed(Integer.toString(slider.getValue()));
-		SpeedLabel.setText("Speed: " + slider.getValue());
+		// SpeedLabel.setText("Speed: " + slider.getValue());
+		if (slider.getValue() == 0)
+			SpeedLabel.setText("Speed: 0 rpm");
+		else
+			SpeedLabel.setText("Speed: " + 60000
+					/ (delays[slider.getValue() - 1] * 47) + " rpm");
 	}
 
 	static void connect() {
@@ -257,15 +294,15 @@ public class MainClass implements Runnable {// implements Runnable {
 
 	private static void initGUI() {
 		// Set up the options pane
-		JPanel optionsPane = initOptionsPane();
+		initOptionsPane();
 		// Set up the slider pane
-		JPanel sliderPane = new JPanel(new BorderLayout());
-		sliderPane.add(slider);
+		// JPanel sliderPane = new JPanel(new BorderLayout());
+		// sliderPane.add(slider);
 		// Set up the main pane
-		JPanel mainPane = new JPanel(new BorderLayout());
-		mainPane.setSize(450, 450);
-		mainPane.add(optionsPane, BorderLayout.WEST);
-		mainPane.add(sliderPane, BorderLayout.EAST);
+		// JPanel mainPane = new JPanel(new BorderLayout());
+		// mainPane.setSize(450, 450);
+		// mainPane.add(optionsPane, BorderLayout.WEST);
+		// mainPane.add(sliderPane, BorderLayout.EAST);
 		// Set up the main frame
 		mainFrame = new JFrame("Motor Control");
 
@@ -275,7 +312,7 @@ public class MainClass implements Runnable {// implements Runnable {
 				try {
 					motorLeft.stop();
 					motorLeft.closePort();
-					// motorLeft.disconnect();
+
 				} catch (Exception ex) {
 					System.out.println("It's not connected yet ");
 				} catch (Throwable e) {
@@ -288,11 +325,54 @@ public class MainClass implements Runnable {// implements Runnable {
 			}
 		});
 		mainFrame.setVisible(true);
-		mainFrame.setContentPane(mainPane);
-		mainFrame.setLocation(200, 200);
-		mainFrame.setSize(450, 450);
+		// mainFrame.setContentPane(mainPane);
+		mainFrame.setLocation(200, 60);
+		mainFrame.setSize(500, 600);
 		mainFrame.setVisible(true);
 		mainFrame.setResizable(false);
+		Container mycon = mainFrame.getContentPane();
+		mycon.setLayout(null);
+
+		// ADD components
+		mycon.add(slider);
+		slider.updateUI();
+
+		mycon.add(connectButton);
+		connectButton.updateUI();
+
+		mycon.add(StartStop);
+		StartStop.updateUI();
+
+		mycon.add(left);
+		left.updateUI();
+
+		mycon.add(right);
+		right.updateUI();
+
+		mycon.add(jLabel45);
+		jLabel45.updateUI();
+
+		mycon.add(SpeedLabel);
+		SpeedLabel.updateUI();
+
+		mycon.add(DirectionLabel);
+		DirectionLabel.updateUI();
+
+		mycon.add(label1);
+		label1.updateUI();
+		mycon.add(label2);
+		label2.updateUI();
+		mycon.add(label3);
+		label3.updateUI();
+		mycon.add(label4);
+		label4.updateUI();
+		mycon.add(label5);
+		label5.updateUI();
+		mycon.add(label6);
+		label6.updateUI();
+		mycon.add(label7);
+		label7.updateUI();
+		// END components
 	}
 
 	/**
@@ -329,6 +409,7 @@ public class MainClass implements Runnable {// implements Runnable {
 					+ "No motors connected !!", "Error",
 					JOptionPane.CLOSED_OPTION);
 			System.exit(0);
+
 		}
 
 	}
@@ -337,6 +418,16 @@ public class MainClass implements Runnable {// implements Runnable {
 
 	static void initialize() {
 		EditCom();
+		delays = new int[9];
+		delays[0] = 150;
+		delays[1] = 100;
+		delays[2] = 80;
+		delays[3] = 60;
+		delays[4] = 50;
+		delays[5] = 40;
+		delays[6] = 30;
+		delays[7] = 20;
+		delays[8] = 5;
 		if (Error == constants.NoMotorsConnectedError) {
 			System.exit(0);
 		} else {
@@ -368,33 +459,38 @@ public class MainClass implements Runnable {// implements Runnable {
 
 			if (conflag == 1) {
 				try {
+					Thread.sleep(250);
 					motorLeft.test("%");
-					Thread.sleep(500);
+					Thread.sleep(250);
 				} catch (Throwable x) {
 					motorLeft.closePort();
-					try {		
+					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block					
-//						e.printStackTrace();
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
+
 					while (true) {
+
+						motorLeft.closePort();
 						JOptionPane
 								.showMessageDialog(
 										mainFrame,
 										"Motor is disconnected.. "
 												+ "Please plug motor in and press OK..  ",
 										"Error", JOptionPane.ERROR_MESSAGE);
+
 						if (getAvailablePorts().contains(constants.COM)) {
-							try{motorLeft.closePort();}catch(Exception e){}
+							mainFrame.setEnabled(false);
+							mainFrame.setVisible(false);
+							initialize();
+							conflag = 0;
 							break;
-							
+						} else {
+
 						}
 					}
-					mainFrame.setEnabled(false);
-					mainFrame.setVisible(false);
-					initialize();
-					conflag = 0;
 				}
 
 			}
