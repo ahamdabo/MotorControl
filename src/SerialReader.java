@@ -1,11 +1,18 @@
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
  * 
- * @author Ahmed
+ * 
+ * @author Ahmed AbdelRazikAssaf 
+ * @author Mohammed Alaa
+ * @author Afaf Hassan
+ * @author Ahmad AboELhassan
+ * @version 1.01
+ * @category Utilities
+ * @since Dec 15th 2013
  * 
  */
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class SerialReader implements Runnable {
 	InputStream in;
@@ -14,7 +21,7 @@ public class SerialReader implements Runnable {
 	 * 
 	 * @param in
 	 */
-	
+
 	public SerialReader(InputStream in) {
 		this.in = in;
 	}
@@ -28,7 +35,7 @@ public class SerialReader implements Runnable {
 				// String[] s = msg.split("\\.");
 				// constants.Speed = Integer.parseInt(s[0]);
 				// constants.Direction = Integer.parseInt(s[1]);
-	System.out.print(new String(buffer, 0, len));
+				System.out.print(new String(buffer, 0, len));
 			}
 
 		} catch (IOException e) {

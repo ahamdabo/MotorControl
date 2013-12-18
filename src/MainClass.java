@@ -1,12 +1,16 @@
 /**
  * 
+ * 
+ * @author Ahmed AbdelRazikAssaf 
+ * @author Mohammed Alaa
+ * @author Afaf Hassan
  * @author Ahmad AboELhassan
- * @version 1.00
+ * @version 1.01
  * @category Utilities
  * @since Dec 15th 2013
  * 
- * 
  */
+
 
 import gnu.io.CommPortIdentifier;
 
@@ -62,8 +66,7 @@ public class MainClass implements Runnable {// implements Runnable {
 
 	/**
 	 * 
-	 * @return List<String>
-	 * 
+	 * @return List<String> This method returns the available serial ports
 	 */
 	static List<String> getAvailablePorts() {
 		List<String> list = new ArrayList<String>();
@@ -195,6 +198,7 @@ public class MainClass implements Runnable {// implements Runnable {
 
 	}
 
+	
 	static void speedControl() {
 		motorLeft.setSpeed(Integer.toString(slider.getValue()));
 		SpeedLabel.setText("Speed: " + slider.getValue());
@@ -270,6 +274,7 @@ public class MainClass implements Runnable {// implements Runnable {
 			public void windowClosing(WindowEvent ev) {
 				try {
 					motorLeft.stop();
+					motorLeft.closePort();
 					// motorLeft.disconnect();
 				} catch (Exception ex) {
 					System.out.println("It's not connected yet ");
@@ -363,15 +368,15 @@ public class MainClass implements Runnable {// implements Runnable {
 
 			if (conflag == 1) {
 				try {
-					motorLeft.write("%");
+					motorLeft.test("%");
 					Thread.sleep(500);
 				} catch (Throwable x) {
 					motorLeft.closePort();
-					try {
+					try {		
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						// TODO Auto-generated catch block					
+//						e.printStackTrace();
 					}
 					while (true) {
 						JOptionPane
@@ -381,7 +386,9 @@ public class MainClass implements Runnable {// implements Runnable {
 												+ "Please plug motor in and press OK..  ",
 										"Error", JOptionPane.ERROR_MESSAGE);
 						if (getAvailablePorts().contains(constants.COM)) {
+							try{motorLeft.closePort();}catch(Exception e){}
 							break;
+							
 						}
 					}
 					mainFrame.setEnabled(false);

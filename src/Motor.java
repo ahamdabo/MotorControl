@@ -1,5 +1,8 @@
 /**
- * 
+ *  
+ * @author Ahmed AbdelRazikAssaf 
+ * @author Mohammed Alaa
+ * @author Afaf Hassan
  * @author Ahmad AboELhassan
  * @version 1.01
  * @category Utilities
@@ -29,6 +32,8 @@ public class Motor {// implements Runnable {
 	/**
 	 * @param COM
 	 * @throws Throwable
+	 *             The Motor constructor initialize a connection between PC &
+	 *             Kit through the given COM port
 	 */
 
 	Motor(String COM) throws Exception {
@@ -37,14 +42,19 @@ public class Motor {// implements Runnable {
 		connected = true;
 	}
 
-	public void closePort() {
-		System.out.println("Closing: ");
+	/**
+	 * This method is used to close the port..
+	 * 
+	 */
+	void closePort() {
+		System.out.println("Closing..");
 		new Thread() {
 			@Override
 			public void run() {
 				try {
 					in.close();
 					serialPort.close();
+					System.out.println("Closed.");
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
@@ -52,6 +62,12 @@ public class Motor {// implements Runnable {
 		}.start();
 	}
 
+	/**
+	 * Start Motor sets direction to left and speed to 4
+	 * 
+	 * @param speed
+	 * 
+	 */
 	void start(int speed) {
 
 		this.speed = Integer.toString(speed);
@@ -73,6 +89,9 @@ public class Motor {// implements Runnable {
 		constants.Direction = "Left";
 	}
 
+	/**
+	 * Stop the motor - sets the speed to 0 and the direction to left
+	 */
 	void stop() {
 		try {
 			writer(out, constants.stop);
@@ -90,6 +109,7 @@ public class Motor {// implements Runnable {
 	}
 
 	/**
+	 * set speed
 	 * 
 	 * @param spd
 	 * @throws Throwable
@@ -105,11 +125,17 @@ public class Motor {// implements Runnable {
 		this.speed = spd;
 	}
 
+	/**
+	 * returns speed value
+	 * 
+	 * @return int
+	 */
 	int getSpeed() {
 		return Integer.parseInt(this.speed);
 	}
 
 	/**
+	 * set direction of the motor
 	 * 
 	 * @param dir
 	 * @throws Throwable
@@ -124,11 +150,17 @@ public class Motor {// implements Runnable {
 		Direction = dir;
 	}
 
+	/**
+	 * gets direction of the motor
+	 * 
+	 * @return int
+	 */
 	int getDirection() {
 		return Integer.parseInt(this.Direction);
 	}
 
 	/**
+	 * Connect to the given serial port
 	 * 
 	 * @param portName
 	 * @throws Exception
@@ -136,7 +168,6 @@ public class Motor {// implements Runnable {
 	void connect(String portName) throws Exception {
 		portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
 		if (portIdentifier.isCurrentlyOwned()) {
-
 			System.out.println("Error: Port is currently in use");
 		} else {
 			commPort = portIdentifier.open(this.getClass().getName(), 1000);
@@ -160,13 +191,19 @@ public class Motor {// implements Runnable {
 	 * @param str
 	 * @throws Exception
 	 */
-
-	void write(String str) throws Throwable {
+	/**
+	 * this method is to check if the Kit still connected to the PC
+	 * 
+	 * @param str
+	 * @throws Throwable
+	 */
+	void test(String str) throws Throwable {
 		// TODO Auto-generated method stub
 		writer(out, str);
 	}
 
 	/**
+	 * this method is to write to the serial port directly
 	 * 
 	 * @param out
 	 * @param msg
