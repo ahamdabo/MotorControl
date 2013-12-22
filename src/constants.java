@@ -1,5 +1,5 @@
 /**
- * 
+ *  
  * @author Ahmed AbdelRazikAssaf 
  * @author Mohammed Alaa
  * @author Afaf Hassan
@@ -7,8 +7,10 @@
  * @version 1.01
  * @category Utilities
  * @since Dec 15th 2013
- * @see 
+ *  
+ *  ITI - Embedded Systems 2013 - Intake34
  * 
+ * @see
  *  This Java source code provides a solution for controlling DC motors through
  * PCs serial port.
  * 
